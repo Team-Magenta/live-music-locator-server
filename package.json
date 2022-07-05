@@ -16,5 +16,11 @@
   "bugs": {
     "url": "https://github.com/Team-Magenta/live-music-locator-server/issues"
   },
-  "homepage": "https://github.com/Team-Magenta/live-music-locator-server#readme"
+  "homepage": "https://github.com/Team-Magenta/live-music-locator-server#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "mongoose": "^6.4.3"
+  }
 }
