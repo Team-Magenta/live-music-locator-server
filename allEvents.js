@@ -7,9 +7,9 @@ async function getAllEvents(req, res) {
         let { location } = req.query;
         let cityUrl = `https://app.ticketmaster.com/discovery/v2/events.json?countryCode=US&city=${location}&classificationName=music&apikey=${process.env.TM_API_KEY}`;
         let newLocation = await axios.get(cityUrl);
-        console.log('newLocation: ', newLocation);
+        // console.log('newLocation: ', newLocation);
         let eventsArray = newLocation.data._embedded.events.map(event => new Events (event));
-        console.log('eventsArray: ', eventsArray);
+        // console.log('eventsArray: ', eventsArray);
         res.status(200).send(eventsArray);
     } catch (error) {
         res.send(error);
