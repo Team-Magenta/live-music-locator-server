@@ -10,6 +10,17 @@ async function getAllEvents(req, res) {
     let { artist, venue } = req.query;
     console.log({ artist, venue });
 
+
+
+
+    // TODO: 
+    // VENUE URL WORKING
+    // NEED TO GET ATTRACTIONS URL WORKING
+    // TO TEST COMMENT OUT VENUE URL AND START CONSOLE LOGGING ATTRACTIONSS URL BLOCK
+    // REMOVE VENUE ID FROM EVENTS URL TO TEST ATTRACTIONS URL
+
+
+
     // let attractionsUrl = `https://app.ticketmaster.com/discovery/v2/attractions.json?countryCode=US&keyword=${artist}&classificationName=music&apikey=${process.env.TM_API_KEY}`;
     // let attractions = await axios.get(attractionsUrl);
     // // console.log(attractions.data._embedded.attractions);
