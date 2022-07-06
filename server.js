@@ -4,7 +4,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const events = require('./Models/events.js');
-// const allEvents = require('./allEvents');
+const getAllEvents = require('./allEvents');
 
 const mongoose = require('mongoose');
 
@@ -15,7 +15,7 @@ mongoose.connect(`${process.env.DB_URL}`);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
-  console.log('Mongoose is connected');
+    console.log('Mongoose is connected');
 });
 
 const app = express();
@@ -27,63 +27,63 @@ app.cors = express();
 const PORT = process.env.PORT || 3002;
 
 
-app.get('/events', getEvent);
+app.get('/events', getEvents);
 //this endpoint hits database
-app.get('/allEvents', handleApiCall);
+app.get('/allEvents', getAllEvents);
 //this endpoint hits api
 app.post('/events', postEvent);
-app.delete('/events', deleteEvent);
+app.delete('/events/:id', deleteEvent);
 
-async function getEvent(req, res, next) {
+async function getEvents(req, res, next) {
 
-  try {
-    let results = await events.find();
-    res.status(200).send(results);
-  } catch (err) {
-    next(err);
-  }
+    try {
+        let results = await events.find();
+        res.status(200).send(results);
+    } catch (err) {
+        next(err);
+    }
 }
+//this is for adding to 'my events'
+// async function handleApiCall(req, res, next) {
 
-async function handleApiCall(req, res, next) {
-
-  try {
-    let results = await events.find();
-    res.status(200).send(results);
-  } catch (err) {
-    next(err);
-  }
-}
+//     try {
+//         let results = await events.find();
+//         res.status(200).send(results);
+//     } catch (err) {
+//         next(err);
+//     }
+// }
 
 
 
 async function postEvent(req, res, next) {
 
-  try {
-    let createEvent = await events.create(req.body);
-    res.status(200).send(createEvent);
-  } catch (err) {
-    next(err);
-  }
+    try {
+        let createEvent = await events.create(req.body);
+        res.status(200).send(createEvent);
+    } catch (err) {
+        next(err);
+    }
 }
 
 async function deleteEvent(req, res, next) {
-  let id = req.params.id;
+    let id = req.params.id;
 
-  try {
-    await events.findByIdAndDelete(id);
-    res.status(200).send('item deleted');
-  } catch (err) {
-    next(err);
-  }
+    try {
+        await events.findByIdAndDelete(id);
+        res.status(200).send('item deleted');
+    } catch (err) {
+        next(err);
+    }
 }
 
 
 app.get('/', (req, res) => {
-  res.send('Welcome to our page');
+    res.send('Welcome to our page');
 });
 
 app.get('*', (req, res) => {
-  res.status(404).send('Content not available');
+    res.status(404).send('Content not available');
 });
 
 app.listen(PORT, () => console.log(`listening on ${PORT}`));
