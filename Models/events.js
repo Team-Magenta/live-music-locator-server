@@ -5,6 +5,7 @@ const { Schema } = mongoose;
 
 const eventSchema = new Schema({
 
+
     artist: { type: String, required: true },
     image: { type: String, required: true },
     venue: { type: Array, required: true },
