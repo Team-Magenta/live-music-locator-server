@@ -5,10 +5,11 @@ const { Schema } = mongoose;
 
 const eventSchema = new Schema({
 
-    name: { type: String, required: true },
+    artist: { type: String, required: true },
     image: { type: String, required: true },
-    location: { type: String, required: true },
-    venue: { type: String, required: true }
+    venue: { type: Array, required: true },
+    attended: {type: Boolean, default: false, required: false},
+    date: { type: String, required: true}
 
 });
 
