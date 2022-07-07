@@ -65,8 +65,10 @@ async function postEvent(req, res, next) {
     }
 }
 
+
 // async function deleteEvent(req, res, next) {
 //     let id = req.params.id;
+
 
 //     try {
 //         await events.findByIdAndDelete(id);
@@ -76,6 +78,11 @@ async function postEvent(req, res, next) {
 //     }
 // }
 
+app.put('/events/:id', async (req, res) => {
+    const { artist, image, venue, date, attended } = req.body;
+    const updatedEvent = await events.findByIdAndUpdate(req.params.id, { artist, image, venue, date, attended }, { new: true, overwrite: true });
+    res.send(updatedEvent);
+  });
 
 app.get('/', (req, res) => {
     res.send('Welcome to our page');
@@ -84,6 +91,8 @@ app.get('/', (req, res) => {
 app.get('*', (req, res) => {
     res.status(404).send('Content not available');
 });
+
+
 
 app.listen(PORT, () => console.log(`listening on ${PORT}`));
 
