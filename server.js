@@ -3,7 +3,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const events = require('./Models/events.js');
+const Events = require('./Models/events.js');
 const getAllEvents = require('./allEvents');
 
 const mongoose = require('mongoose');
@@ -27,22 +27,22 @@ app.cors = express();
 const PORT = process.env.PORT || 3002;
 
 
-app.get('/events', getEvents);
+// app.get('/events', getEvents);
 //this endpoint hits database
 app.get('/allEvents', getAllEvents);
 //this endpoint hits api
 app.post('/events', postEvent);
-app.delete('/events/:id', deleteEvent);
+// app.delete('/events/:id', deleteEvent);
 
-async function getEvents(req, res, next) {
+// async function getEvents(req, res, next) {
 
-    try {
-        let results = await events.find();
-        res.status(200).send(results);
-    } catch (err) {
-        next(err);
-    }
-}
+//     try {
+//         let results = await events.find();
+//         res.status(200).send(results);
+//     } catch (err) {
+//         next(err);
+//     }
+// }
 //this is for adding to 'my events'
 // async function handleApiCall(req, res, next) {
 
@@ -57,26 +57,32 @@ async function getEvents(req, res, next) {
 
 
 async function postEvent(req, res, next) {
-
     try {
-        let createEvent = await events.create(req.body);
+        let createEvent = await Events.create(req.body);
         res.status(200).send(createEvent);
     } catch (err) {
         next(err);
     }
 }
 
-async function deleteEvent(req, res, next) {
-    let id = req.params.id;
 
-    try {
-        await events.findByIdAndDelete(id);
-        res.status(200).send('item deleted');
-    } catch (err) {
-        next(err);
-    }
-}
+// async function deleteEvent(req, res, next) {
+//     let id = req.params.id;
 
+
+//     try {
+//         await events.findByIdAndDelete(id);
+//         res.status(200).send('item deleted');
+//     } catch (err) {
+//         next(err);
+//     }
+// }
+
+app.put('/events/:id', async (req, res) => {
+    const { artist, image, venue, date, attended } = req.body;
+    const updatedEvent = await events.findByIdAndUpdate(req.params.id, { artist, image, venue, date, attended }, { new: true, overwrite: true });
+    res.send(updatedEvent);
+  });
 
 app.get('/', (req, res) => {
     res.send('Welcome to our page');
@@ -85,6 +91,8 @@ app.get('/', (req, res) => {
 app.get('*', (req, res) => {
     res.status(404).send('Content not available');
 });
+
+
 
 app.listen(PORT, () => console.log(`listening on ${PORT}`));
 
