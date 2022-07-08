@@ -5,6 +5,7 @@ const express = require('express');
 const cors = require('cors');
 const Events = require('./Models/events.js');
 const getAllEvents = require('./allEvents');
+// const verifyUser = require('./auth');
 
 const mongoose = require('mongoose');
 

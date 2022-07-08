@@ -1,19 +1,27 @@
 'use strict';
 
 const axios = require('axios');
+const verifyUser = require('./auth');
 
 async function getAllEvents(req, res) {
-    try {
-        let { location } = req.query;
-        let cityUrl = `https://app.ticketmaster.com/discovery/v2/events.json?countryCode=US&city=${location}&classificationName=music&apikey=${process.env.TM_API_KEY}`;
-        let newLocation = await axios.get(cityUrl);
-        // console.log('newLocation: ', newLocation);
-        let eventsArray = newLocation.data._embedded.events.map(event => new Events (event));
-        // console.log('eventsArray: ', eventsArray);
-        res.status(200).send(eventsArray);
-    } catch (error) {
-        res.send(error);
-    }
+    verifyUser(req, async (err, user) => {
+        if (err) {
+            console.error(err);
+            res.send('invalid token');
+        } else {
+            try {
+                let { location } = req.query;
+                let cityUrl = `https://app.ticketmaster.com/discovery/v2/events.json?countryCode=US&city=${location}&classificationName=music&apikey=${process.env.TM_API_KEY}`;
+                let newLocation = await axios.get(cityUrl);
+                // console.log('newLocation: ', newLocation);
+                let eventsArray = newLocation.data._embedded.events.map(event => new Events (event));
+                // console.log('eventsArray: ', eventsArray);
+                res.status(200).send(eventsArray);
+            } catch (error) {
+                res.send(error);
+            }
+        }
+    });
 }
 
 
