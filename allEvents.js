@@ -4,6 +4,7 @@ const axios = require('axios');
 const verifyUser = require('./auth');
 
 async function getAllEvents(req, res) {
+
     verifyUser(req, async (err, user) => {
         if (err) {
             console.error(err);
@@ -22,6 +23,7 @@ async function getAllEvents(req, res) {
             }
         }
     });
+
 }
 
 
