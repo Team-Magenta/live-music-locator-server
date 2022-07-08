@@ -28,22 +28,22 @@ app.cors = express();
 const PORT = process.env.PORT || 3002;
 
 
-// app.get('/events', getEvents);
+app.get('/events', getEvents);
 //this endpoint hits database
 app.get('/allEvents', getAllEvents);
 //this endpoint hits api
 app.post('/events', postEvent);
-// app.delete('/events/:id', deleteEvent);
+app.delete('/events/:id', deleteEvent);
 
-// async function getEvents(req, res, next) {
+async function getEvents(req, res, next) {
 
-//     try {
-//         let results = await events.find();
-//         res.status(200).send(results);
-//     } catch (err) {
-//         next(err);
-//     }
-// }
+    try {
+        let results = await Events.find();
+        res.status(200).send(results);
+    } catch (err) {
+        next(err);
+    }
+}
 //this is for adding to 'my events'
 // async function handleApiCall(req, res, next) {
 
@@ -67,24 +67,21 @@ async function postEvent(req, res, next) {
 }
 
 
-// async function deleteEvent(req, res, next) {
-//     let id = req.params.id;
-
-
-
-//     try {
-//         await events.findByIdAndDelete(id);
-//         res.status(200).send('item deleted');
-//     } catch (err) {
-//         next(err);
-//     }
-// }
+async function deleteEvent(req, res, next) {
+    let id = req.params.id;
+    try {
+        await Events.findByIdAndDelete(id);
+        res.status(200).send('item deleted');
+    } catch (err) {
+        next(err);
+    }
+}
 
 app.put('/events/:id', async (req, res) => {
     const { artist, image, venue, date, attended } = req.body;
-    const updatedEvent = await events.findByIdAndUpdate(req.params.id, { artist, image, venue, date, attended }, { new: true, overwrite: true });
+    const updatedEvent = await Events.findByIdAndUpdate(req.params.id, { artist, image, venue, date, attended }, { new: true, overwrite: true });
     res.send(updatedEvent);
-  });
+});
 
 app.get('/', (req, res) => {
     res.send('Welcome to our page');
